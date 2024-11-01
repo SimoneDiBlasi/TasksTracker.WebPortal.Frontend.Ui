@@ -1,0 +1,48 @@
+name: Trigger auto deployment for taskmanager-ui-prod-001
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ master ]
+    paths:
+    - '**'
+    - '.github/workflows/taskmanager-ui-prod-001-AutoDeployTrigger-d488c614-1543-49a0-9d6c-e702adfff4ff.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.TASKMANAGERUIPROD001_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.TASKMANAGERUIPROD001_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.TASKMANAGERUIPROD001_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          _dockerfilePathKey_: _dockerfilePath_
+          registryUrl: acrtaskmanagerprod001.azurecr.io
+          registryUsername: ${{ secrets.TASKMANAGERUIPROD001_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.TASKMANAGERUIPROD001_REGISTRY_PASSWORD }}
+          containerAppName: taskmanager-ui-prod-001
+          resourceGroup: rg-taskmanager-prod-001
+          imageToBuild: acrtaskmanagerprod001.azurecr.io/taskmanager-ui-prod-001:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+

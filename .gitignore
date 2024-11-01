@@ -1,22 +1,16 @@
 
 *.bin
 
-.vs/TasksTracker.Ui/DesignTimeBuild/
-
-.vs/TasksTracker.Ui/v17/
-
-TaskTracker.UI/TaskTracker.UI/bin/Debug/net8.0/
-
-TaskTracker.UI/TaskTracker.UI/obj/Container/
-
-TaskTracker.UI/TaskTracker.UI/obj/Debug/net8.0/
-
+*.config
+*./obj/
 *.vsidx
 
-TaskTracker.UI/.vs/TaskTracker.UI/v17/
+TasksTracker.UI/.vs/TasksTracker.UI/v17/
 
-*.user
+TasksTracker.UI/bin/Debug/net8.0/
 
-*.csproj
+TasksTracker.UI/obj/Container/
 
-TaskTracker.UI/TaskTracker.UI/obj/
+TasksTracker.UI/obj/Debug/net8.0/
+
+TasksTracker.UI/obj/
